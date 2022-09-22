@@ -1,0 +1,103 @@
+/*
+ * @NOTE: Prepend a `~` to css file paths that are in your node_modules
+ *        See https://github.com/webpack-contrib/sass-loader#imports
+ */
+html { padding:0;margin:0 }
+body {
+  position: relative;
+  color: white;
+  height: 100vh;
+  background: linear-gradient(
+    200.96deg,
+    #fedc2a -29.09%,
+    #dd5789 51.77%,
+    #7a2c9e 129.35%
+  );
+  font-family: sans-serif;
+  overflow-y: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+}
+
+#root { width:100vw }
+
+button {
+  background-color: white;
+  padding: 5px 15px;
+  border-radius: 2px;
+  border: none;
+  appearance: none;
+  font-size: .8rem;
+  box-shadow: 0px 8px 28px -6px rgba(24, 39, 75, 0.12),
+    0px 18px 88px -4px rgba(24, 39, 75, 0.14);
+  transition: all ease-in 0.1s;
+  cursor: pointer;
+}
+
+button:hover {
+  transform: scale(1.05);
+}
+
+li {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+  height: fit-content;
+  width: fit-content;
+  margin: 10px;
+}
+
+a:hover {
+  opacity: 1;
+  text-decoration: none;
+}
+
+main {
+  max-height: calc(100vh - 60px);
+  overflow: auto;
+  margin-top: 60px;
+  position: relative;
+  padding: 0;
+}
+
+nav {
+  height: 60px;
+  width: 100%;
+  position: fixed;
+  top:0;
+  left:0;
+  background-color: rgba(255,255,255,0.4);
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+main table {
+  padding: 20px
+}
+
+main table button {
+  opacity: 0.1;
+}
+
+main table tbody td { padding: 6px }
+
+main table tbody tr:hover {
+  background-color: rgba(0,0,0,0.15);
+}
+
+main table tr:hover button {
+  opacity: 0.9;
+}
+
+main table tr:hover button:hover {
+  opacity: 1;
+}
+
+main table thead { opacity: 0.5 }
+
+main table small { opacity: 0.6; display: block; margin-bottom: 10px }
