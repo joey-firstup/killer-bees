@@ -1,6 +1,12 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
-import './App.css';
+import {
+  EnvironmentsContext,
+  useCloudBees,
+  useEnvironments,
+  useLocalValues,
+} from './hooks';
+import './styles.css';
 
 const FlagsTable = () => {
   const [, updateState] = useState({});
@@ -12,7 +18,7 @@ const FlagsTable = () => {
   const flags = prefiltered
     .filter(
       ({ enabled: e, name, description }) =>
-        (e || !enabled) &&
+        (!enabled || (enabled && e)) &&
         (!filter ||
           `${name} ${description}`
             .toLocaleLowerCase()
@@ -79,78 +85,14 @@ const FlagsTable = () => {
   );
 };
 
-export default function App() {
+export function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<FlagsTable />} />
-      </Routes>
-    </Router>
+    <EnvironmentsContext.Provider value={useEnvironments()}>
+      <Router>
+        <Routes>
+          <Route path="/" element={<FlagsTable />} />
+        </Routes>
+      </Router>
+    </EnvironmentsContext.Provider>
   );
-}
-
-function useLocalValues() {
-  const [flags, setFlags] = useState<string[]>([]);
-  useEffect(() => {
-    const yml = window.electron.readFlags();
-    setFlags(yml.split('\n').map((flag) => flag.trim()));
-  }, []);
-  const getValue = useCallback(
-    (name: string) => {
-      return (
-        flags
-          .filter((flag) => {
-            const [f] = flag.split(':');
-            return f === name;
-          })
-          .map((flag) => {
-            const [, v] = flag.split(':');
-            return v.trim() === 'true';
-          })[0] || false
-      );
-    },
-    [flags]
-  );
-  const setValue = useCallback(
-    (name: string, value: boolean) => {
-      let found = false;
-      const lines = flags.map((flag) => {
-        const [f] = flag.split(':');
-        found = found || f === name;
-        return f === name ? `${name}: ${value}` : flag;
-      });
-      if (!found) lines.push(`${name}: ${value}`);
-      const yml = lines.join('\n');
-      window.electron.writeFlags(yml);
-      setFlags(lines);
-    },
-    [flags]
-  );
-  return { getValue, setValue };
-}
-
-function useCloudBees() {
-  const appId = window.electron.appId;
-  const token = window.electron.token;
-  const [flags, setFlags] = useState<
-    { name: string; description: string; enabled: boolean; value: boolean }[]
-  >([]);
-  useEffect(() => {
-    window
-      .fetch(
-        `https://x-api.rollout.io/public-api/applications/${appId}/us-east-1-prod-sc/flags`,
-        {
-          // method: 'GET',
-          // credentials: 'same-origin',
-          // mode: 'cors',
-          headers: {
-            accept: 'application/json',
-            authorization: `Bearer ${token}`,
-          },
-        }
-      )
-      .then((resp) => resp.json())
-      .then((json) => setFlags(json));
-  }, []);
-  return { flags };
 }

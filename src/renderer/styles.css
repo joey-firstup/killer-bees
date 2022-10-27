@@ -1,0 +1,176 @@
+/*
+ * @NOTE: Prepend a `~` to css file paths that are in your node_modules
+ *        See https://github.com/webpack-contrib/sass-loader#imports
+ */
+:root {
+  /* Font sizes */
+  --font-size-1: 32px;
+  --font-size-2: 20px;
+  --font-size-3: 16px;
+  --font-size-4: 14px;
+  --font-size-5: 12px;
+  --font-size-6: 10px;
+
+  /* Colors */
+  --color-gray00: white;
+  --color-gray02: #fbfaff;
+  --color-gray05: #f1f0f7;
+  --color-gray10: #e3e1eb;
+  --color-gray20: #cac9d1;
+  --color-gray30: #b2b1ba;
+  --color-gray40: #9a98a3;
+  --color-gray50: #817f8a;
+  --color-gray60: #676570;
+  --color-gray70: #4d4c54;
+  --color-gray80: #323138;
+  --color-gray90: #1b1a1f;
+  --color-brandTintLight: #a27efc;
+  --color-brandTintDark: #7450fa;
+  --color-brandFull: #5533c9;
+  --color-brandFullRGB: 85, 51, 201;
+  --color-brandOutline: rgba(var(--color-brandFullRGB), 0.2);
+  --color-brandShadeLight: #301e6b;
+  --color-brandShadeDark: #181547;
+  --color-brandShadeDarkRGB: 24, 21, 71;
+  --color-brandSolar: #f74857;
+  --color-greenTintLight: #f6ffed;
+  --color-greenTintDark: #a6e47a;
+  --color-greenFull: #52c41a;
+  --color-greenShadeLight: #237804;
+  --color-greenShadeDark: #092b00;
+  --color-redTintLight: #fff1f0;
+  --color-redTintDark: #ff8e8a;
+  --color-redFull: #dd1d1d;
+  --color-redShadeLight: #a8071a;
+  --color-redShadeDark: #5c0011;
+  --color-orangeTintLight: #fff7e6;
+  --color-orangeTintDark: #ffcb7d;
+  --color-orangeFull: #fa8c16;
+  --color-orangeShadeLight: #ad4e00;
+  --color-orangeShadeDark: #612500;
+  --color-yellowTintLight: #feffe6;
+  --color-yellowTintDark: #fff87b;
+  --color-yellowFull: #fadb14;
+  --color-yellowShadeLight: #ad8b00;
+  --color-yellowShadeDark: #614700;
+  --color-tealTintLight: #e6fffb;
+  --color-tealTintDark: #72e2d9;
+  --color-tealFull: #13c2c2;
+  --color-tealShadeLight: #006d75;
+  --color-tealShadeDark: #002329;
+  --color-blueTintLight: #e6f7ff;
+  --color-blueTintDark: #7dcbff;
+  --color-blueFull: #1890ff;
+  --color-blueShadeLight: #0050b3;
+  --color-blueShadeDark: #002766;
+}
+
+:root {
+  scrollbar-color: transparent transparent;
+}
+
+::-webkit-scrollbar {
+  width: 15px;
+  height: 15px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-brandSolar)
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.4);
+}
+
+html {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  position: relative;
+  color: var(--color-gray02);
+  height: 100vh;
+  background: linear-gradient(
+    -200.96deg,
+    var(--color-brandSolar) -29.09%,
+    var(--color-brandShadeLight) 51.77%,
+    var(--color-brandFull) 129.35%
+  );
+  font-family:  Helvetica, Arial, sans-serif;
+  letter-spacing: 0.5px;
+  overflow-y: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+}
+
+button {
+  background-color: white;
+  padding: 5px 15px;
+  border-radius: 2px;
+  border: none;
+  appearance: none;
+  font-size: var(--font-size-5);
+  transition: all ease-in 0.1s;
+  cursor: pointer;
+}
+
+button:hover {
+  transform: scale(1.05);
+}
+
+li {
+  list-style: none;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+main {
+  max-height: calc(100vh - 60px);
+  overflow: auto;
+  margin-top: 60px;
+  position: relative;
+  padding: 0;
+}
+
+nav {
+  height: 60px;
+  width: 100vw;
+  position: fixed;
+  top:0;
+  left:0;
+  background-color: rgba(0,0,0,0.4);
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+main table {
+  padding: 20px
+}
+
+main table button {
+  opacity: 0.1;
+}
+
+main table tbody td { padding: 6px }
+
+main table tbody tr:hover {
+  background-color: rgba(0,0,0,0.15);
+}
+
+main table tr:hover button {
+  opacity: 0.9;
+}
+
+main table tr:hover button:hover {
+  opacity: 1;
+}
+
+main table thead { opacity: 0.5 }
+
+main table small { opacity: 0.6; display: block; margin-bottom: 10px }
