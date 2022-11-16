@@ -132,6 +132,8 @@ a:hover {
 
 main {
   max-height: calc(100vh - 60px);
+  min-height: calc(100vh - 60px);
+  width: 100vw;
   overflow: auto;
   margin-top: 60px;
   position: relative;
@@ -144,33 +146,41 @@ nav {
   position: fixed;
   top:0;
   left:0;
-  background-color: rgba(0,0,0,0.4);
+  background-color: rgba(0,0,0,0.6);
   padding: 20px;
   box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-main table {
-  padding: 20px
+table {
+  padding: 20px;
+  min-width: 100%;
 }
 
-main table button {
+table button {
   opacity: 0.1;
 }
 
-main table tbody td { padding: 6px }
+table tbody td { padding: 6px }
 
-main table tbody tr:hover {
+table tbody tr:hover {
   background-color: rgba(0,0,0,0.15);
 }
 
-main table tr:hover button {
+table tr:hover button {
   opacity: 0.9;
 }
 
-main table tr:hover button:hover {
+table tr:hover button:hover {
   opacity: 1;
 }
 
-main table thead { opacity: 0.5 }
+table thead { opacity: 0.5 }
 
-main table small { opacity: 0.6; display: block; margin-bottom: 10px }
+table small { opacity: 0.6; display: block; margin-bottom: 10px }
+
+.pinned {
+  background-color: rgba(0,0,0,0.3);
+}

@@ -7,7 +7,13 @@ import {
   useState,
 } from 'react';
 
-const ALL_ENVS = ['us-east-1-prod-sc', 'us-east-1-stg-pub'] as const;
+// Usage: `const { envs, env, setEnv } = useContext(EnvironmentsContext)`
+/* BEGIN ENVIRONMENT CONTEXT/HOOKS ... */
+const ALL_ENVS = [
+  'us-east-1-prod-sc',
+  'us-east-1-stg-fly',
+  'us-east-1-stg-pub',
+] as const;
 const DEFAULT_ENV = ALL_ENVS[0];
 
 export function useEnvironments() {
@@ -22,7 +28,9 @@ export const EnvironmentsContext = createContext<
   envs: [],
   setEnv() {},
 });
+/* ... END OF ENVIRONMENT CONTEXT/HOOKS */
 
+// TODO should be in a context?
 export function useCloudBees() {
   const { appId, token } = window.electron;
   const [flags, setFlags] = useState<
@@ -30,6 +38,8 @@ export function useCloudBees() {
   >([]);
   const { env } = useContext(EnvironmentsContext);
   useEffect(() => {
+    const cache = JSON.parse(localStorage.getItem('flags-cache') || '{}');
+    setFlags(cache[env] ?? []);
     window
       .fetch(
         `https://x-api.rollout.io/public-api/applications/${appId}/${env}/flags`,
@@ -41,8 +51,21 @@ export function useCloudBees() {
         }
       )
       .then((resp) => resp.json())
-      .then((json) => setFlags(json));
-  }, []);
+      .then((json) => {
+        localStorage.setItem(
+          'flags-cache',
+          JSON.stringify({ ...cache, [env]: json })
+        );
+        return setFlags(json);
+      })
+      .catch(() => {
+        localStorage.setItem(
+          'flags-cache',
+          JSON.stringify({ ...cache, [env]: [] })
+        );
+        setFlags([]);
+      });
+  }, [env, appId, token]);
   return { flags };
 }
 
@@ -84,4 +107,49 @@ export function useLocalValues() {
     [flags]
   );
   return { getValue, setValue };
+}
+
+export function useFilteredFlags() {
+  const local = useLocalValues();
+  const { flags: prefiltered } = useCloudBees();
+  const [query, setQuery] = useState('');
+  const flags = prefiltered
+    .filter(
+      ({ enabled, name, description }) =>
+        enabled &&
+        (!query ||
+          `${name} ${description}`
+            .toLocaleLowerCase()
+            .includes(query.toLocaleLowerCase()))
+    )
+    .map((flag) => ({ ...flag, value: local.getValue(flag.name) }));
+  return {
+    loading: !prefiltered.length,
+    flags,
+    updateFlag: local.setValue,
+    filter: { query, setQuery },
+  };
+}
+
+export function usePinnedFlags(
+  flags: ReturnType<typeof useCloudBees>['flags']
+) {
+  const [pinned, setPinned] = useState<typeof flags[number]['name'][]>([]);
+  useEffect(() => {
+    const local = JSON.parse(localStorage.getItem('pinned-flags') || '"[]"');
+    setPinned(local);
+  }, []);
+  return {
+    flags: flags.filter(({ name }) => pinned.includes(name)),
+    pinned,
+    togglePin: useCallback((name: string) => {
+      setPinned((names) => {
+        const newNames = names.includes(name)
+          ? names.filter((pin) => pin !== name)
+          : [...names, name];
+        localStorage.setItem('pinned-flags', JSON.stringify(newNames));
+        return newNames;
+      });
+    }, []),
+  };
 }
