@@ -1,6 +1,7 @@
 #+title: Killer Bees
 
 * Killer Bees
+A GUI app for managing your ~flags.yml~ file.
 ** Read the other READ for building instructions
 ** Help
 *** Firstup Branding (colors, icons)
